@@ -3,8 +3,8 @@ import { auth, db } from "../firebase.js";
 import { withRouter } from "react-router-dom";
 
 const Login = (props) => {
-  const [email, setEmail] = React.useState("prueba@prueba.com");
-  const [pass, setPass] = React.useState("123123");
+  const [email, setEmail] = React.useState("");
+  const [pass, setPass] = React.useState("");
   const [error, setError] = React.useState(null);
   const [esRegistro, setEsRegistro] = React.useState(true);
 
@@ -42,7 +42,7 @@ const Login = (props) => {
       setEmail("");
       setPass("");
       setError(null);
-      props.history.push('/admin')
+      props.history.push("/admin");
     } catch (error) {
       console.log(error);
       if (error.code === "auth/invalid-email") {
@@ -67,12 +67,12 @@ const Login = (props) => {
       });
       await db.collection(res.user.uid).add({
         name: "Tarea de ejemplo",
-        fecha: Date.now()
-      })
+        fecha: Date.now(),
+      });
       setEmail("");
       setPass("");
       setError(null);
-      props.history.push('/admin')
+      props.history.push("/admin");
     } catch (error) {
       console.log(error);
       if (error.code === "auth/invalid-email") {
@@ -118,6 +118,15 @@ const Login = (props) => {
             >
               {esRegistro ? "¿Ya estas registrado?" : "¿No tienes cuenta?"}
             </button>
+            {!esRegistro ? (
+              <button
+                className="btn btn-dark btn-lg btn-block"
+                type="button"
+                onClick={() => props.history.push("/reset")}
+              >
+                Recuperar Contraseña
+              </button>
+            ) : null}
           </form>
         </div>
       </div>
@@ -125,4 +134,4 @@ const Login = (props) => {
   );
 };
 
-export default withRouter(Login) ;
+export default withRouter(Login);
